@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Author: Sidmaz666
+# Github: https://www.github.com/sidmaz666
+# Description: A CLI Tool to Scrape Lyrics from your Terminal either using Rofi or FZF(default).
+# LYRIC SOURCE: https://www.azlyrics.com/
+
+BOLD='\033[0;1m'
+YELLOW='\033[1;33m' 
+COLOR_DEFAULT='\033[0;49m'
+
+#Don't Modify this Variable
+FZF="fzf"
+
+FZF_PROMPT="--no-preview --header-first --layout=reverse"
+
+ROFI="rofi -dmenu -i --fuzzy -theme gruvbox-dark -p" 
+ROFI_PROMPT="dmenu"
+
+PAGE=1
+
+DISPLAY_LYRIC="bat --number"
+
+help(){
+IFS='' read -r -d '' help_msg <<"EOF"
+
+ [USAGE]: lyrica [SEARCH_QUERY]
+ lyrica --rofi To Launch Lyrica With Rofi
+               By Default Menu is set to FZF
+
+ lyrica -h | --help To See Usage!
+EOF
+echo -e "$help_msg"
+}
+
+scrape_lyrics(){
+  
+  [[ -z "$query" ]] && exit
+  
+  real_query=$(echo "$query" | sed 's/[[:space:]]/+/g')
+  
+  URL="https://search.azlyrics.com/search.php?q=$real_query&w=songs&p=$PAGE"
+  
+  echo   "Searching Lyrics For $query in $URL" 
+  
+  curl -s $URL \
+  -H 'Connection: keep-alive' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Mobile Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Referer: https://www.azlyrics.com/' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  --compressed -o /tmp/$real_query.txt
+  
+  SEARCH_RESULT_NO="$( grep "<a href" /tmp/$real_query.txt | grep -v "<li>" | wc -l )"
+  SEARCH_RESULT_URLS="$( grep "<a href" /tmp/$real_query.txt | grep -v "<li>" | grep -o '<a .*href=.*>' | sed -e 's/<a /\n<a /g' | sed -e 's/<a .*href=['"'"'"]//' -e 's/["'"'"'].*$//' -e '/^$/ d' > /tmp/$real_query+URL.txt)"
+  SEARCH_RESULT_TITLE="$( grep "<a href" /tmp/$real_query.txt | grep -v "<li>" | sed  -e 's/<[^>]*>//g' -e 's/^[ \t]*//' -e 's/"//g')"
+
+  rm /tmp/$real_query.txt
+
+ if [ "$MENU" = "fzf" ]; then
+   RND="$FZF_PROMPT"
+else
+   RND="Lyrica($PAGE/$SEARCH_RESULT_NO)"
+ fi
+
+ LYRIC_SELECTED="$(echo -e "$SEARCH_RESULT_TITLE\n0. Go to Next Page ($PAGE/$SEARCH_RESULT_NO)" | $MENU $RND )"
+
+ [[ -z "$LYRIC_SELECTED" ]] && exit
+ 
+  GET_LINK_NO="$(echo "$LYRIC_SELECTED" | sed 's/\.//' | awk '{print $1}' )" 
+
+  [[ "$GET_LINK_NO" = 0 ]] && PAGE="$(($PAGE+1))" && scrape_lyrics
+
+  GET_LINK="$(cat /tmp/$real_query+URL.txt | head -n$GET_LINK_NO | tail -n1)"
+
+  rm /tmp/$real_query+URL.txt
+ 
+  curl -s $GET_LINK \
+  -H 'Connection: keep-alive' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Mobile Safari/537.36' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+  -H 'Referer: https://www.azlyrics.com/' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  --compressed -o /tmp/$real_query+LYRIC.txt
+
+  SONG_LYRIC="$(cat /tmp/$real_query+LYRIC.txt | sed -n '/Usage of /, /MxM baner/{ /Usage of /! { /MxM banner/! p } }' | sed '/<\/div>/,$d' | sed  -e 's/<[^>]*>//g')"
+
+  CLEAN_TITLE="$(echo "$LYRIC_SELECTED" | sed 's/[0-9]*//g' | sed 's/^.//g' )"
+ 
+  echo -e "Song:$YELLOW$CLEAN_TITLE$COLOR_DEFAULT\n\n$BOLD$SONG_LYRIC" > /tmp/$real_query+LYRIC.txt 
+ 
+  $DISPLAY_LYRIC /tmp/$real_query+LYRIC.txt
+
+  rm /tmp/$real_query+LYRIC.txt
+
+}
+
+
+[[ -z "$1" ]] && read -p "Search : " query && MENU="$FZF" && scrape_lyrics
+[[ ! -z "$1" ]] && [[ "$1" != "-h" ]] && [[ "$1" != "--help" ]] && [[ "$1" != "--rofi" ]] && query="$@" && MENU="$FZF" && scrape_lyrics
+[[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] && help
+[[ "$1" == "--rofi" ]] && query="$(rofi -dmenu -p " Search " -theme $ROFI_PROMPT)" && MENU="$ROFI" && scrape_lyrics

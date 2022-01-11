@@ -3,6 +3,8 @@ A CLI Tool to Scrape Lyrics from Terminal either using Rofi or FZF(default). The
 
 ## Showcasae
 
+![preview](/assets/preview.gif)
+
 ## Dependencies
 
 1. curl (for scrapping)
