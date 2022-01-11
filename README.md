@@ -10,7 +10,7 @@ A CLI Tool to Scrape Lyrics from Terminal either using Rofi or FZF(default). The
 1. curl (for scrapping)
 2. sed (for regex)
 3. grep (for regex)
-4. fzf (for menun)
+4. fzf (for menu)
 5. bat  (for displaying lyrics, pager)
 6. rofi (for menu-optional)
 7. nerd-font (for uicode support-very optional)
