@@ -7,6 +7,10 @@ A CLI Tool to Scrape Lyrics from Terminal either using Rofi or FZF(default). The
 
 ## Dependencies
 
+#### Set the TERM Variable
+
+<b>Rofi<b/> will spawn <i>bat or cat</i> in the default Terminal, as set in the TERM Variable in .zshrc, .bashrc , .xinitrc or in the /etc/environment file.
+
 1. curl (for scrapping)
 2. sed (for regex)
 3. grep (for regex)
@@ -41,7 +45,6 @@ However, if you search for lyric from your terminal or would like to bind lyrica
 - To change the Rofi Search Prompt Theme, change the variable <b>ROFI_PROMPT</b>. 
 - Additional FZF flags can be added by modifying the <b>FZF_PROMPT</b> variable.
 - Select the last option, <b>0. Go to Next Page</b> to scrape more lyrics!       
-
 
 
 
