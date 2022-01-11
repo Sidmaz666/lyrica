@@ -87,7 +87,7 @@ else
   -H 'Accept-Language: en-US,en;q=0.9' \
   --compressed -o /tmp/$real_query+LYRIC.txt
 
-  SONG_LYRIC="$(cat /tmp/$real_query+LYRIC.txt | sed -n '/Usage of /, /MxM baner/{ /Usage of /! { /MxM banner/! p } }' | sed '/<\/div>/,$d' | sed  -e 's/<[^>]*>//g')"
+  SONG_LYRIC="$(cat /tmp/$real_query+LYRIC.txt | sed -n '/Usage of /, /MxM baner/{ /Usage of /! { /MxM banner/! p } }' | sed '/<\/div>/,$d' | sed  -e 's/<[^>]*>//g ' | sed 's/&quot;//g' )"
 
   CLEAN_TITLE="$(echo "$LYRIC_SELECTED" | sed 's/[0-9]*//g' | sed 's/^.//g' )"
  
