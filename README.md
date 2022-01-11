@@ -45,4 +45,4 @@ However, if you search for lyric from your terminal or would like to bind lyrica
 
 
 
-### Licensed under <a href="https://github.com/Sidmaz666/lyrica/blob/main/LICENSE.md"><b>GNU GPL3</b></a>
+### Licensed under <a href="https://github.com/Sidmaz666/lyrica/blob/main/LICENSE.md"><b>GPL-3.0</b></a>
