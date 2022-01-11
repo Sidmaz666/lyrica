@@ -3,7 +3,7 @@ A CLI Tool to Scrape Lyrics from Terminal either using Rofi or FZF(default). The
 
 ## Showcasae
 
-![preview](/assets/preview.gif)
+<img src="https://github.com/Sidmaz666/lyrica/blob/main/assets/preview.gif" width="100%">
 
 ## Dependencies
 
