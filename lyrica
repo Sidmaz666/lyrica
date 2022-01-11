@@ -5,6 +5,9 @@
 # Description: A CLI Tool to Scrape Lyrics from your Terminal either using Rofi or FZF(default).
 # LYRIC SOURCE: https://www.azlyrics.com/
 
+#Show Search Query On Terminal
+BANNER=0
+
 BOLD='\033[0;1m'
 YELLOW='\033[1;33m' 
 COLOR_DEFAULT='\033[0;49m'
@@ -41,7 +44,7 @@ scrape_lyrics(){
   
   URL="https://search.azlyrics.com/search.php?q=$real_query&w=songs&p=$PAGE"
   
-  echo   "Searching Lyrics For $query in $URL" 
+  [[ "$BANNER" > 0 ]]  && echo "Searching Lyrics For $query in $URL" 
   
   curl -s $URL \
   -H 'Connection: keep-alive' \
