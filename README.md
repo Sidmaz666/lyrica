@@ -22,7 +22,7 @@ You can run the script as usual!
        ./lyrica Monster
        ./lyrica --rofi
 
-However, if you would often search for search for lyric from your terminal or would like to bind lyrica to a <i>keybinding</i> then run the following command to install <b>Lyrica </b><i> system-wide</i>
+However, if you search for lyric from your terminal or would like to bind lyrica to a <i>keybinding</i> then run the following command to install <b>Lyrica </b><i> system-wide</i>
 
        sudo cp lyrica /usr/bin/lyrica
                   
