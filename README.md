@@ -9,7 +9,7 @@ A CLI Tool to Scrape Lyrics from Terminal either using Rofi or FZF(default). The
 
 #### Set the TERM Variable
 
-<b>Rofi<b/> will spawn <i>bat or cat</i> in the default Terminal, as set in the TERM Variable in .zshrc, .bashrc , .xinitrc or in the /etc/environment file.
+<b>Rofi</b> will spawn <i>bat or cat</i> in the default Terminal, as set in the TERM Variable in .zshrc, .bashrc , .xinitrc or in the /etc/environment file.
 
 1. curl (for scrapping)
 2. sed (for regex)
@@ -33,11 +33,15 @@ However, if you search for lyric from your terminal or would like to bind lyrica
                   
 # Usage
 
-       [USAGE]: lyrica [SEARCH_QUERY]
-       lyrica --rofi To Launch Lyrica With Rofi
-               By Default Menu is set to FZF
+     [USAGE]: lyrica [SEARCH_QUERY]
+     lyrica --rofi To Launch Lyrica With Rofi
+                  By Default Menu is set to FZF	       
+     lyrica [SEARCH_SONG_NAME] > [LYRIC_FILE_NAME].txt To Download
+     lyrica -h | --help To See Usage!
 
-       lyrica -h | --help To See Usage!
+#### Download
+
+     lyrics Dancing in my room > lyrics.txt
 
 # Misc
 
