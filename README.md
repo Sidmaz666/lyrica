@@ -41,7 +41,7 @@ However, if you search for lyric from your terminal or would like to bind lyrica
 
 #### Download
 
-     lyrics Dancing in my room > lyrics.txt
+     lyrica Dancing in my room > lyrics.txt
 
 # Misc
 
