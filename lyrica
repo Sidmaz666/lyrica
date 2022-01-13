@@ -81,7 +81,7 @@ else
 
   [[ "$GET_LINK_NO" = 0 ]] && PAGE="$(($PAGE+1))" && scrape_lyrics
 
-  GET_LINK="$(cat /tmp/$real_query+URL.txt | head -n$GET_LINK_NO | tail -n1)"
+  GET_LINK="$(head -n$GET_LINK_NO /tmp/$real_query+URL.txt | tail -n1)"
 
   rm /tmp/$real_query+URL.txt
  
@@ -95,7 +95,7 @@ else
   -H 'Accept-Language: en-US,en;q=0.9' \
   --compressed -o /tmp/$real_query+LYRIC.txt
 
-  SONG_LYRIC="$(cat /tmp/$real_query+LYRIC.txt | sed -n '/Usage of /, /MxM baner/{ /Usage of /! { /MxM banner/! p } }' | sed '/<\/div>/,$d' | sed  -e 's/<[^>]*>//g ' | sed 's/&quot;//g' )"
+  SONG_LYRIC="$( sed -n '/Usage of /, /MxM baner/{ /Usage of /! { /MxM banner/! p } }' /tmp/$real_query+LYRIC.txt | sed '/<\/div>/,$d' | sed  -e 's/<[^>]*>//g ' | sed 's/&quot;//g' )"
 
   CLEAN_TITLE="$(echo "$LYRIC_SELECTED" | sed 's/[0-9]*//g' | sed 's/^.//g' )"
  
