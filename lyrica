@@ -46,7 +46,7 @@ scrape_lyrics(){
   
   real_query=$(echo "$query" | sed 's/[[:space:]]/+/g')
   
-  URL="https://search.azlyrics.com/search.php?q=$real_query&w=songs&p=$PAGE"
+  URL="https://search.azlyrics.com/search.php?q=$real_query&x=ab44b3302972db3495afe6a30a30f6c471d67bda7e13a4b4f9dace23b6efda5b&w=songs&p=$PAGE"
   
   [[ "$BANNER" > 0 ]]  && echo "Searching Lyrics For $query in $URL" 
   
